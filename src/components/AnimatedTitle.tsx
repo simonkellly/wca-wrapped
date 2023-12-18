@@ -32,7 +32,6 @@ export default function AnimatedTitle({ text }: { text: string }) {
 	});
 
 	useEffect(() => {
-		console.log(inView)
 		if (inView) {
 			ctrls.start("visible");
 		}

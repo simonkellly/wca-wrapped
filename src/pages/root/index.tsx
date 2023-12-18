@@ -1,12 +1,12 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { randomScrambleForEvent } from 'cubing/scramble';
 import { TwistyPlayer } from 'cubing/twisty';
 import { motion, useAnimate } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { Outlet } from 'react-router-dom';
 import AnimatedTitle from '../../components/AnimatedTitle';
 import { Cube } from '../../components/Cube';
 import AuthProvider from '../../providers/AuthProvider';
+import { Scrambow } from 'scrambow';
 
 
 export default function Root() {
@@ -15,6 +15,7 @@ export default function Root() {
 
 	const [twisty, setTwisty] = useState<TwistyPlayer>();
 	const alg = useRef<string[]>([])
+	const scrambow = useMemo(() => new Scrambow(), [])
 
 
 	async function animation() {
@@ -36,19 +37,15 @@ export default function Root() {
 	}, [])
 
 	useEffect(() => {
-		let interval: number;
-		if (twisty) {
-			interval = setInterval(() => {
-				if (alg.current.length > 0) {
-					twisty.experimentalAddMove(alg.current.shift()!)
-				}
-				else {
-					randomScrambleForEvent('333').then(scramble =>
-						alg.current = scramble.toString().split(' ')
-					)
-				}
-			}, 1000);
-		}
+		const interval = setInterval(() => {
+			if (alg.current.length > 0) {
+				twisty?.experimentalAddMove(alg.current.shift()!)
+			}
+			else {
+				alg.current = scrambow.get(1)[0].scramble_string.split(" ")
+			}
+		}, 1000);
+
 		return () => clearInterval(interval);
 	}, [twisty])
 
