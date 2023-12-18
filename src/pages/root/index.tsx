@@ -1,17 +1,17 @@
-import { Box, Center, Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { randomScrambleForEvent } from 'cubing/scramble';
 import { TwistyPlayer } from 'cubing/twisty';
-import { AnimationDefinition, motion, useAnimate } from 'framer-motion';
+import { motion, useAnimate } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import AnimatedTitle from '../../components/AnimatedTitle';
 import { Cube } from '../../components/Cube';
 import AuthProvider from '../../providers/AuthProvider';
-import AnimatedTitle from '../../components/AnimatedTitle';
-import { Outlet } from 'react-router-dom';
 
 
 export default function Root() {
 	const [cubeScope, cubeAnimate] = useAnimate();
-	const [divScope, divAnimate] = useAnimate();
+	const [divScope,] = useAnimate();
 
 	const [twisty, setTwisty] = useState<TwistyPlayer>();
 	const alg = useRef<string[]>([])

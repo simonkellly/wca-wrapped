@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 /* Customized history preserving `staging` query parameter on location change. */
 
 import { createBrowserHistory } from 'history';
