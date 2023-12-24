@@ -1,4 +1,4 @@
-import { Box, Container, Flex, IconButton, useDisclosure } from '@chakra-ui/react';
+import { Box, Container, Flex, IconButton } from '@chakra-ui/react';
 import { TwistyPlayer } from 'cubing/twisty';
 import { AnimatePresence, motion, useAnimate } from 'framer-motion';
 import { useEffect, useState, useRef, useMemo } from 'react';
