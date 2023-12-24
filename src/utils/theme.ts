@@ -3,6 +3,10 @@ import { extendTheme } from "@chakra-ui/react"
 
 // 2. Call `extendTheme` and pass your custom values
 export const theme = extendTheme({
+	fonts: {
+		heading: "'Tilt Warp Variable', sans-serif",
+		body: "'Open Sans', sans-serif"
+	},
 	colors: {
 		primary: {
 			50: '#dbfefe',

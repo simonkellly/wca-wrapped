@@ -1,22 +1,26 @@
 // AnimatedTitle.js
 
-import { useEffect } from "react";
+import { Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
-import { useAnimation, motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
 const Title = styled.h2`
-  font-size: 3rem;
+  font-size: 32px;
   font-weight: 600;
+  text-align:center;
 `;
 
 const Word = styled(motion.span)`
+	font-family: var(--chakra-fonts-heading);
   display: inline-block;
   margin-right: 0.25em;
   white-space: nowrap;
 `;
 
-const Character = styled(motion.span)`
+const Character = styled(Text)`
+	font-family: var(--chakra-fonts-heading);
   display: inline-block;
   margin-right: -0.05em;
 `;
@@ -79,6 +83,7 @@ export default function AnimatedTitle({ text }: { text: string }) {
 						{word.split("").map((character, index) => {
 							return (
 								<Character
+									as={motion.span}
 									aria-hidden="true"
 									key={index}
 									variants={characterAnimation}

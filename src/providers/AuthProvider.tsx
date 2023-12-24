@@ -4,7 +4,7 @@ import { WCA_ORIGIN, WCA_OAUTH_CLIENT_ID, WCA_OAUTH_ORIGIN } from '../lib/wca-en
 import history from '../lib/history';
 import type { User } from '../../types.d.ts'
 
-const localStorageKey = (key: string) => `competition-groups.${WCA_OAUTH_CLIENT_ID}.${key}`;
+const localStorageKey = (key: string) => `wca-wrapped.${WCA_OAUTH_CLIENT_ID}.${key}`;
 
 const getLocalStorage = (key: string) => localStorage.getItem(localStorageKey(key));
 const setLocalStorage = (key: string, value: string) =>
@@ -14,10 +14,10 @@ const setLocalStorage = (key: string, value: string) =>
  * Allows for use of staging api in production
  */
 const oauthRedirectUri = () => {
-	const appUri = window.location.origin;
+	const appUri = window.location.href;
 	const searchParams = new URLSearchParams(window.location.search);
 	const stagingParam = searchParams.has('staging');
-	return stagingParam ? `${appUri}?staging=true` : appUri;
+	return stagingParam ? `${appUri}wrapped?staging=true` : `${appUri}wrapped`;
 };
 
 interface IAuthContext {

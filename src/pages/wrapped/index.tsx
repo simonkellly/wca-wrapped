@@ -1,9 +1,59 @@
-import { Box } from "@chakra-ui/react"
-import { motion } from "framer-motion"
+import { Flex, FlexProps } from "@chakra-ui/react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import WrappedController from "../../components/flows/controller";
+import { useAuth } from "../../providers/AuthProvider";
+import useStore from "../../store";
+
+const MotionFlex = motion<Omit<FlexProps, "transition">>(Flex);
 
 export default function Wrapped() {
-	console.log("hello")
+	const { user, accessToken } = useAuth();
+	const initializeWrapped = useStore(state => state.initializeWrapped)
+	const wrappedState = useStore(state => state.wrappedState)
+	const previous = usePrevious(wrappedState.index)
+	const dir = previous! < wrappedState.index
+	useEffect(() => {
+		initializeWrapped(user!, accessToken!)
+	}, [user, accessToken])
 	return (
-		<Box as={motion.div} animate={{ opacity: [0, 1] }}>wrapp222ed</Box>
+		<AnimatePresence custom={wrappedState}>
+			<MotionFlex className="content" w="100%" gridArea={"content"} key={wrappedState.state} h="100%" mt="0.5rem" direction="column" align={"center"} justify={"flex-start"} gap="1rem"
+				initial="enter"
+				animate="in"
+				exit="exit"
+				transition={{
+					type: 'spring',
+					stiffness: 400,
+					damping: 50,
+					opacity: {
+						duration: 1
+					}
+				}}
+				variants={{
+					enter: { x: dir ? -300 : 300, opacity: 0, scale: 0.3 },
+					in: { x: 0, opacity: 1, scale: 1 },
+					exit: () => {
+						return {
+							x: !dir ? -300 : 300,
+							opacity: 0,
+							scale: 0.3
+						}
+					}
+				}}>
+				<WrappedController />
+			</MotionFlex>
+		</AnimatePresence>
 	)
+}
+
+
+function usePrevious<T>(state: T) {
+	const ref = useRef<T>()
+
+	useEffect(() => {
+		ref.current = state
+	}, [state])
+
+	return ref.current
 }

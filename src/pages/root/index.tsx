@@ -1,26 +1,35 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Container, Flex, IconButton, useDisclosure } from '@chakra-ui/react';
 import { TwistyPlayer } from 'cubing/twisty';
-import { motion, useAnimate } from 'framer-motion';
+import { AnimatePresence, motion, useAnimate } from 'framer-motion';
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { Outlet } from 'react-router-dom';
 import AnimatedTitle from '../../components/AnimatedTitle';
 import { Cube } from '../../components/Cube';
 import AuthProvider from '../../providers/AuthProvider';
 import { Scrambow } from 'scrambow';
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons"
+import useStore from '../../store';
+import ControllerButton from '../../components/flows/controllerButton';
+import useCubeStore, { puzzle } from '../../store/cubeStore';
+import CubeSelectModal from '../../components/CubeSelectModal';
+
 
 
 export default function Root() {
+	const cube = useCubeStore(state => state.puzzleType)
 	const [cubeScope, cubeAnimate] = useAnimate();
-	const [divScope,] = useAnimate();
-
+	const [divScope, divAnimate] = useAnimate();
 	const [twisty, setTwisty] = useState<TwistyPlayer>();
 	const alg = useRef<string[]>([])
 	const scrambow = useMemo(() => new Scrambow(), [])
 
+	const { index } = useStore(state => state.wrappedState)
+	const flows = useStore(state => state.flows)
+	const changeWrappedState = useStore(state => state.changeWrappedState)
 
 	async function animation() {
-		await cubeAnimate(cubeScope.current, { scale: [5, 1], opacity: [0, 1], y: [0, 1] }, { duration: 1.5 })
-		// await divAnimate(divScope.current, { opacity: [0, 1] }, { duration: 0.5 })
+		await cubeAnimate(cubeScope.current, { scale: [5, 1], opacity: [0, 1], y: ["100%", "0%"], rotate: [0, 360] }, { duration: 1.5 })
+		await divAnimate(divScope.current, { display: ["none", "grid"] }, { duration: 0.5 })
 		await cubeAnimate(cubeScope.current, {
 			x: ['0%', '5%', '0%'], // Move the shapes along the x-axis
 			rotateZ: [0, 360], // Rotate from 0 degrees to 360 degrees on the z-axis
@@ -33,6 +42,13 @@ export default function Root() {
 	}
 
 	useEffect(() => {
+		if (twisty) {
+			twisty.puzzle = puzzle[cube]
+			alg.current = []
+		}
+	}, [cube])
+
+	useEffect(() => {
 		animation()
 	}, [])
 
@@ -42,25 +58,57 @@ export default function Root() {
 				twisty?.experimentalAddMove(alg.current.shift()!)
 			}
 			else {
-				alg.current = scrambow.get(1)[0].scramble_string.split(" ")
+				alg.current = scrambow.setType(cube).get(1)[0].scramble_string.split(" ").filter(x => x !== "")
 			}
 		}, 1000);
 
-		return () => clearInterval(interval);
-	}, [twisty])
+		return () => {
+			console.log("clearing")
+			clearInterval(interval);
+		}
+	}, [twisty, cube])
 
 	return (
 		<AuthProvider>
-			<Box h="100vh" w="100vw" overflow={"hidden"} background={"rgb(34,193,195) radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);"}>
-				<Box m="auto" as={motion.div} w="fit-content" ref={cubeScope}>
-					<Cube onTwistyInit={twisty => setTwisty(twisty)} controlPanel='none' hintFacelets='none' background="none" />
-				</Box>
+			<CubeSelectModal />
+			<AnimatePresence>
+				<Flex direction={"row"} justify={"center"} align="center" bg="gray.800" w="100vw" h="100vh">
+					<Container maxW="lg" h="98%" display={"flex"} alignContent={"center"} alignItems={"center"} gap="1rem" >
+						<IconButton
+							onClick={() => changeWrappedState("left")}
+							isDisabled={index <= 0}
+							display={{
+								base: "none",
+								md: "block",
+							}}
+							variant='outline'
+							colorScheme='primary'
+							size={"sm"}
+							aria-label='back' icon={<ArrowBackIcon />} />
+						<Box borderRadius={"2%"} w="100%" h="100%" overflow={"hidden"} background={"rgb(34,193,195) radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);"}>
+							<Box h="30%" m="auto" as={motion.div} ref={cubeScope}>
+								<Cube puzzle={puzzle[cube]} onTwistyInit={twisty => setTwisty(twisty)} controlPanel='none' hintFacelets='none' background="none" />
+							</Box>
+							<Box h="70%" w="100%" display={"none"} gridTemplateAreas={`"title" "content" "buttons"`} gridTemplateRows={"10% 80% 10%"} as={motion.div} animate={{ opacity: 1, transition: { staggerChildren: 2 } }} ref={divScope}>
+								<AnimatedTitle text={"Cubing Wrapped 2023"} />
+								<Outlet />
+								<ControllerButton />
+							</Box>
+						</Box>
+						<IconButton
+							onClick={() => changeWrappedState("right")}
+							isDisabled={index >= flows.length - 1 || index === -1}
+							display={{
+								base: "none",
+								md: "block",
+							}}
+							variant='outline'
+							colorScheme='primary'
 
-				<Flex direction={"column"} as={motion.div} animate={{ opacity: 1, transition: { staggerChildren: 1 } }} w="100%" align={"center"} justify={"center"} ref={divScope}>
-					<AnimatedTitle text={"Cubing Wrapped 2023"} />
-					<Outlet />
+							size={"sm"} aria-label='next' icon={<ArrowForwardIcon />} />
+					</Container>
 				</Flex>
-			</Box>
+			</AnimatePresence >
 		</AuthProvider >
 	);
 }
