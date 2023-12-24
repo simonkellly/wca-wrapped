@@ -39,7 +39,10 @@ export async function createWrapped(user: User, accessToken: string): Promise<{
 
 	const flows: WrappedState[] = []
 
-	if (competitionsByYear["2023"].length > 0) flows.push(WrappedState.CompetitionsAndEvents)
+	if (competitionsByYear["2023"].length > 0) {
+		flows.push(WrappedState.Competitions)
+		flows.push(WrappedState.Events)
+	}
 	if (user.wca_id.includes("2023")) flows.push(WrappedState.Newcomer)
 	if (positionsByYear["2023"] && positionsByYear["2023"].length > 2) flows.push(WrappedState.Success)
 	if (competitionsByYear["2023"] && competitionsByYear["2023"].length > 0) {

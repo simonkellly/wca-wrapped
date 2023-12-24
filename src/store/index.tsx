@@ -6,14 +6,15 @@ import { Competition, ResultsEntity } from '../types/competition';
 export enum WrappedState {
 	None = 'none',
 	NoCompetitions = 'noCompetitions',
-	CompetitionsAndEvents = 'competitionsAndEvents',
+	Competitions = 'competitions',
+	Events = 'events',
 	Newcomer = 'newcomer',
 	Success = 'success',
 	FavStaff = 'favStaff',
 	Geography = 'geography',
 }
 
-interface StoreState {
+export interface StoreState {
 	wrappedState: { state: WrappedState, index: number },
 	flows: WrappedState[],
 	initializeWrapped: (user: User, accessToken: string) => void,

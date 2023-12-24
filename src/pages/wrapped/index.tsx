@@ -18,24 +18,24 @@ export default function Wrapped() {
 	}, [user, accessToken])
 	return (
 		<AnimatePresence custom={wrappedState}>
-			<MotionFlex className="content" w="100%" gridArea={"content"} key={wrappedState.state} h="100%" mt="0.5rem" direction="column" align={"center"} justify={"flex-start"} gap="1rem"
+			<MotionFlex id="wrapped" className="content" w="100%" gridArea={"content"} key={wrappedState.state} h="100%" mt="0.5rem" direction="column" align={"center"} justify={"flex-start"} gap="1rem"
 				initial="enter"
 				animate="in"
 				exit="exit"
 				transition={{
-					type: 'spring',
+					type: 'linear',
 					stiffness: 400,
 					damping: 50,
 					opacity: {
-						duration: 1
+						duration: 2
 					}
 				}}
 				variants={{
-					enter: { x: dir ? -300 : 300, opacity: 0, scale: 0.3 },
-					in: { x: 0, opacity: 1, scale: 1 },
+					enter: { x: dir ? "-100%" : "100%", opacity: 0, },
+					in: { x: "0%", opacity: 1, scale: 1 },
 					exit: () => {
 						return {
-							x: !dir ? -300 : 300,
+							x: !dir ? "-100%" : "100%",
 							opacity: 0,
 							scale: 0.3
 						}

@@ -11,7 +11,7 @@ import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons"
 import useStore from '../../store';
 import ControllerButton from '../../components/flows/controllerButton';
 import useCubeStore, { puzzle } from '../../store/cubeStore';
-import CubeSelectModal from '../../components/CubeSelectModal';
+import SettingsModal from '../../components/SettingsModal';
 
 
 
@@ -32,7 +32,7 @@ export default function Root() {
 		await divAnimate(divScope.current, { display: ["none", "grid"] }, { duration: 0.5 })
 		await cubeAnimate(cubeScope.current, {
 			x: ['0%', '5%', '0%'], // Move the shapes along the x-axis
-			rotateZ: [0, 360], // Rotate from 0 degrees to 360 degrees on the z-axis
+			rotateZ: [-40, 40], // Rotate from 0 degrees to 360 degrees on the z-axis
 		}, {
 			repeat: Infinity, // Repeat the animation indefinitely
 			duration: 20, // Animation duration in seconds
@@ -70,10 +70,10 @@ export default function Root() {
 
 	return (
 		<AuthProvider>
-			<CubeSelectModal />
+			<SettingsModal />
 			<AnimatePresence>
 				<Flex direction={"row"} justify={"center"} align="center" bg="gray.800" w="100vw" h="100vh">
-					<Container maxW="lg" h="98%" display={"flex"} alignContent={"center"} alignItems={"center"} gap="1rem" >
+					<Container h="98%" display={"flex"} alignContent={"center"} alignItems={"center"} gap="1rem" >
 						<IconButton
 							onClick={() => changeWrappedState("left")}
 							isDisabled={index <= 0}
@@ -85,10 +85,10 @@ export default function Root() {
 							colorScheme='primary'
 							size={"sm"}
 							aria-label='back' icon={<ArrowBackIcon />} />
-						<Box borderRadius={"2%"} w="100%" h="100%" overflow={"hidden"} background={"rgb(34,193,195) radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);"}>
-							<Box h="30%" m="auto" as={motion.div} ref={cubeScope}>
+						<Box id="wrapped-container" borderRadius={"2%"} w="100%" h="100%" overflow={"hidden"} background={"rgb(34,193,195) radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);"}>
+							<Flex justify={"center"} w="100%" h="30%" m="auto" as={motion.div} ref={cubeScope}>
 								<Cube puzzle={puzzle[cube]} onTwistyInit={twisty => setTwisty(twisty)} controlPanel='none' hintFacelets='none' background="none" />
-							</Box>
+							</Flex>
 							<Box h="70%" w="100%" display={"none"} gridTemplateAreas={`"title" "content" "buttons"`} gridTemplateRows={"10% 80% 10%"} as={motion.div} animate={{ opacity: 1, transition: { staggerChildren: 2 } }} ref={divScope}>
 								<AnimatedTitle text={"Cubing Wrapped 2023"} />
 								<Outlet />
