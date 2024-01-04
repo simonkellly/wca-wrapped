@@ -2,6 +2,7 @@
 import { Box, BoxProps } from '@chakra-ui/react';
 import { TwistyPlayer as TP, TwistyPlayerConfig } from 'cubing/twisty';
 import { useEffect, useRef } from 'react';
+import '../styles/cubes.css'
 
 interface TwistyPlayerReactConfig extends TwistyPlayerConfig {
   className?: string;

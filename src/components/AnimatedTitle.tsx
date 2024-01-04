@@ -10,6 +10,7 @@ const Title = styled.h2`
   font-size: 32px;
   font-weight: 600;
   text-align:center;
+  white-space: nowrap;
 `;
 
 const Word = styled(motion.span)`
