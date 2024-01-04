@@ -33,7 +33,9 @@ export async function createWrapped(user: User, accessToken: string): Promise<{
 	const results: { [key: string]: any[] } = objectify(personalResults, (result) => result.competition_id)
 	const competitions: Competition[] = userCompetitions.map((competition: any) => ({ ...competition, results: results[competition.id] }))
 	const competitionsByYear = objectify<Competition>(competitions, (competition) => competition.id.substring(competition.id.length - 4))
-	const positionsByYear = objectify<ResultsEntity>(competitions.flatMap(competition => (competition.results ?? []).filter(r => r.round_type_id === "f")), result => result.competition_id.substring(result.competition_id.length - 4))
+	const positionsByYear = objectify<ResultsEntity>(competitions.flatMap(competition => (competition.results ?? []).filter(r => {
+		return r.round_type_id === "f" || r.round_type_id === "c"
+	})), result => result.competition_id.substring(result.competition_id.length - 4))
 	if (!competitionsByYear["2023"]) {
 		return {
 			flows: [WrappedState.NoCompetitions, WrappedState.Thanks],
