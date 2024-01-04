@@ -21,7 +21,7 @@ export default function CompetitionAndEvents() {
 				<Text display={"inline-block"} as="b" fontSize="xl">{`${thisYear} ${thisYear === 1 ? "competition" : "competitions"}`}</Text>
 			</Box>
 			<Box w="100%" display={"inline-block"} opacity="0">
-				<Text mr={"5px"} display={"inline-block"} fontSize={"lg"}>{`In ${Object.keys(countries).length} ${Object.keys(countries).length > 1 ? "country" : "countries"}`}</Text>
+				<Text mr={"5px"} display={"inline-block"} fontSize={"lg"}>{`In ${Object.keys(countries).length} ${Object.keys(countries).length > 1 ? "countries" : "country"}`}</Text>
 				<Mapchart />
 			</Box>
 			<Flex mt="1rem" align={"center"} justify={"center"} h="30%" w="100%" display={"none"} opacity="0">
