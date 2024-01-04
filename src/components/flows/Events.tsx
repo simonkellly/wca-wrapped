@@ -116,7 +116,7 @@ export default function CompetitionAndEvents() {
 						<StatLabel>Attempts</StatLabel>
 						<StatNumber>{attempts.text}</StatNumber>
 						<StatHelpText>
-							<StatArrow type={attempts.type as "decrease" | "increase"} />
+							<StatArrow color={podiums.type === "decrease" ? "red.300" : "green"} type={attempts.type as "decrease" | "increase"} />
 							{attempts.diff}
 						</StatHelpText>
 					</Stat>
@@ -125,7 +125,7 @@ export default function CompetitionAndEvents() {
 						<StatLabel>Finals</StatLabel>
 						<StatNumber>{finals.text}</StatNumber>
 						<StatHelpText>
-							<StatArrow type={finals.type as "decrease" | "increase"} />
+							<StatArrow color={podiums.type === "decrease" ? "red.300" : "green"} type={finals.type as "decrease" | "increase"} />
 							{finals.diff}
 						</StatHelpText>
 					</Stat>
@@ -133,7 +133,7 @@ export default function CompetitionAndEvents() {
 						<StatLabel>Podiums</StatLabel>
 						<StatNumber>{podiums.text}</StatNumber>
 						<StatHelpText>
-							<StatArrow type={podiums.type as "decrease" | "increase"} />
+							<StatArrow color={podiums.type === "decrease" ? "red.300" : "green"} type={podiums.type as "decrease" | "increase"} />
 							{podiums.diff}
 						</StatHelpText>
 					</Stat>
