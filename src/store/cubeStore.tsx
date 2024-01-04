@@ -12,9 +12,9 @@ export const puzzle: { [key: string]: NonNullable<TwistyPlayerConfig["puzzle"]> 
 	"555": "5x5x5",
 	"666": "6x6x6",
 	"777": "7x7x7",
-	// "clock": "clock",
+	"clock": "clock",
 	"minx": "megaminx",
-	// "sq1": "square1"
+	"sq1": "square1"
 
 
 }

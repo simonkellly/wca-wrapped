@@ -4,11 +4,13 @@ import { TwistyPlayer as TP, TwistyPlayerConfig } from 'cubing/twisty';
 import { useEffect, useRef } from 'react';
 
 interface TwistyPlayerReactConfig extends TwistyPlayerConfig {
+  className?: string;
   boxProps?: BoxProps;
   onTwistyInit?: (twisty: TP) => void;
 }
 
 export const Cube = ({
+  className,
   onTwistyInit,
   boxProps,
   ...props
@@ -21,7 +23,9 @@ export const Cube = ({
         ref.current.removeChild(ref.current.firstChild);
       }
       onTwistyInit?.(twisty)
-      ref.current.appendChild(twisty)
+      const twistyElement = ref.current.appendChild(twisty)
+      if (className) twistyElement.className = className
+
     }
 
   }, [])

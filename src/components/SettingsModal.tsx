@@ -30,9 +30,7 @@ export default function CubeSelectModal() {
 
 	const handleDownloadImage = async () => {
 		const element = document.getElementById('wrapped-container')
-		element!.style.display = "initial"
 		const canvas = await html2canvas(element!, { removeContainer: false })
-		element!.style.display = "none"
 		const data = canvas.toDataURL('image/jpg')
 		const link = document.createElement('a');
 

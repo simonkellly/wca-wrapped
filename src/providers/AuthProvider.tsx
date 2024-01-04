@@ -48,6 +48,10 @@ export default function AuthProvider({ children }: React.PropsWithChildren<objec
 		return rawUserData ? (JSON.parse(rawUserData) as User) : null;
 	});
 
+	useEffect(() => {
+		if (expirationTime && new Date() > new Date(expirationTime!)) signOut()
+	}, [expirationTime])
+
 	const location = useLocation();
 	const navigate = useNavigate();
 

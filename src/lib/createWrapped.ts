@@ -21,8 +21,10 @@ export async function createWrapped(user: User, accessToken: string): Promise<{
 	positionsByYear: {
 		[key: string]: ResultsEntity[];
 	};
+	countryId: string | undefined;
 }> {
 	console.log(`Creating Wrapped for user ${user.name}`)
+	const res = await wcaApiFetch(`/me`, accessToken, {})
 	const userCompetitions: Omit<Competition, "results">[] = await wcaApiFetch(`/persons/${user.wca_id}/competitions`, accessToken, {})
 	const personalResults: ResultsEntity[] = await wcaApiFetch(`/persons/${user.wca_id}/results`, accessToken, {})
 	const results: { [key: string]: any[] } = objectify(personalResults, (result) => result.competition_id)
@@ -31,9 +33,10 @@ export async function createWrapped(user: User, accessToken: string): Promise<{
 	const positionsByYear = objectify<ResultsEntity>(competitions.flatMap(competition => (competition.results ?? []).filter(r => r.round_type_id === "f")), result => result.competition_id.substring(result.competition_id.length - 4))
 	if (!competitionsByYear["2023"]) {
 		return {
-			flows: [WrappedState.NoCompetitions],
+			flows: [WrappedState.NoCompetitions, WrappedState.Thanks],
 			competitionsByYear,
-			positionsByYear
+			positionsByYear,
+			countryId: res?.me?.country?.id
 		}
 	}
 
@@ -44,15 +47,15 @@ export async function createWrapped(user: User, accessToken: string): Promise<{
 		flows.push(WrappedState.Events)
 	}
 	if (user.wca_id.includes("2023")) flows.push(WrappedState.Newcomer)
-	if (positionsByYear["2023"] && positionsByYear["2023"].length > 2) flows.push(WrappedState.Success)
 	if (competitionsByYear["2023"] && competitionsByYear["2023"].length > 0) {
 		flows.push(WrappedState.FavStaff)
-		flows.push(WrappedState.Geography)
 	}
+	flows.push(WrappedState.Thanks)
 	console.log(`Created Wrapped for user ${user.name}`)
 	return {
 		flows,
 		competitionsByYear,
 		positionsByYear,
+		countryId: res?.me?.country?.id
 	}
 }

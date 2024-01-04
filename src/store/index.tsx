@@ -12,6 +12,7 @@ export enum WrappedState {
 	Success = 'success',
 	FavStaff = 'favStaff',
 	Geography = 'geography',
+	Thanks = 'thanks',
 }
 
 export interface StoreState {
@@ -26,6 +27,7 @@ export interface StoreState {
 	positionsByYear?: {
 		[key: string]: ResultsEntity[];
 	};
+	countryId: string | undefined,
 	user?: User
 }
 
@@ -33,12 +35,12 @@ export interface StoreState {
 const useStore = create<StoreState>()((set) => ({
 	wrappedState: { state: WrappedState.None, index: -1 },
 	flows: [],
-
+	countryId: undefined,
 	setWrappedState: (wrappedState: StoreState['wrappedState']) => set({ wrappedState }),
 	initializeWrapped: async (user, accesssToken) => {
-		const { flows, competitionsByYear, positionsByYear } = await createWrapped(user, accesssToken)
+		const { flows, competitionsByYear, positionsByYear, countryId } = await createWrapped(user, accesssToken)
 		set(state => {
-			if (state.flows.length === 0) return { ...state, flows, wrappedState: { state: flows[0], index: 0 }, competitionsByYear, positionsByYear, user }
+			if (state.flows.length === 0) return { ...state, flows, wrappedState: { state: flows[0], index: 0 }, competitionsByYear, positionsByYear, user, countryId }
 			return state
 		})
 	},

@@ -6,6 +6,7 @@ import Geography from "./Geography"
 import Newcomer from "./Newcomer"
 import None from "./None"
 import Success from "./Success"
+import Thanks from "./Thanks"
 
 export default function WrappedController() {
 	const wrappedState = useStore(state => state.wrappedState)
@@ -19,6 +20,7 @@ export default function WrappedController() {
 			case WrappedState.Geography: return <Geography />
 			case WrappedState.NoCompetitions: return <None />
 			case WrappedState.Success: return <Success />
+			case WrappedState.Thanks: return <Thanks />
 			default:
 				return <h1>{wrappedState.state}</h1>
 		}

@@ -8,7 +8,7 @@ import { Cube } from '../../components/Cube';
 import AuthProvider from '../../providers/AuthProvider';
 import { Scrambow } from 'scrambow';
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons"
-import useStore from '../../store';
+import useStore, { WrappedState } from '../../store';
 import ControllerButton from '../../components/flows/controllerButton';
 import useCubeStore, { puzzle } from '../../store/cubeStore';
 import SettingsModal from '../../components/SettingsModal';
@@ -26,6 +26,7 @@ export default function Root() {
 	const { index } = useStore(state => state.wrappedState)
 	const flows = useStore(state => state.flows)
 	const changeWrappedState = useStore(state => state.changeWrappedState)
+	const wrappedState = useStore(state => state.wrappedState)
 
 	async function animation() {
 		await cubeAnimate(cubeScope.current, { scale: [5, 1], opacity: [0, 1], y: ["100%", "0%"], rotate: [0, 360] }, { duration: 1.5 })
@@ -86,10 +87,11 @@ export default function Root() {
 							size={"sm"}
 							aria-label='back' icon={<ArrowBackIcon />} />
 						<Box id="wrapped-container" borderRadius={"2%"} w="100%" h="100%" overflow={"hidden"} background={"rgb(34,193,195) radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);"}>
-							<Flex justify={"center"} w="100%" h="30%" m="auto" as={motion.div} ref={cubeScope}>
-								<Cube puzzle={puzzle[cube]} onTwistyInit={twisty => setTwisty(twisty)} controlPanel='none' hintFacelets='none' background="none" />
-							</Flex>
-							<Box h="70%" w="100%" display={"none"} gridTemplateAreas={`"title" "content" "buttons"`} gridTemplateRows={"10% 80% 10%"} as={motion.div} animate={{ opacity: 1, transition: { staggerChildren: 2 } }} ref={divScope}>
+							{wrappedState.state !== WrappedState.Thanks &&
+								<Flex justify={"center"} w="100%" h="30%" m="auto" as={motion.div} ref={cubeScope}>
+									<Cube puzzle={puzzle[cube]} onTwistyInit={twisty => setTwisty(twisty)} controlPanel='none' hintFacelets='none' background="none" />
+								</Flex>}
+							<Box mt={wrappedState.state === WrappedState.Thanks ? "2rem" : "0"} h={wrappedState.state === WrappedState.Thanks ? "100%" : "70%"} w="100%" display={"none"} gridTemplateAreas={`"title" "content" "buttons"`} gridTemplateRows={"10% 80% 10%"} as={motion.div} animate={{ opacity: 1, transition: { staggerChildren: 2 } }} ref={divScope}>
 								<AnimatedTitle text={"Cubing Wrapped 2023"} />
 								<Outlet />
 								<ControllerButton />
