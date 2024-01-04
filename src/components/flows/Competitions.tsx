@@ -12,7 +12,7 @@ export default function CompetitionAndEvents() {
 	const thisYear = competitions["2023"].length
 	// @ts-expect-error reducer
 	const countries = competitions["2023"].map(competition => competition.country_iso2).filter(iso2 => iso2 in countries_iso2).reduce(function (acc, curr) { return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc }, {});
-	const chartText = competitions["2023"].length > (competitions["2022"]?.length ?? 0) ? `That's ${Math.abs(competitions["2023"].length - competitions["2022"].length ?? 0)} more competitions than 2022` : `That's ${Math.abs(competitions["2023"].length - competitions["2022"].length ?? 0)} less competitions than 2022`
+	const chartText = competitions["2023"].length === (competitions["2022"].length ?? 0) ? "That's as many competitions as 2022" : competitions["2023"].length > (competitions["2022"]?.length ?? 0) ? `That's ${Math.abs(competitions["2023"].length - competitions["2022"].length ?? 0)} more competitions than 2022` : `That's ${Math.abs(competitions["2023"].length - competitions["2022"].length ?? 0)} less competitions than 2022`
 
 	return (
 		<StaggeredDisplay textAlign={"center"} w="100%" h="100%" direction={"column"} gap="1rem">
