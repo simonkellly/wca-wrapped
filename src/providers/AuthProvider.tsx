@@ -14,7 +14,7 @@ const setLocalStorage = (key: string, value: string) =>
  * Allows for use of staging api in production
  */
 const oauthRedirectUri = () => {
-	const appUri = window.location.href;
+	const appUri = import.meta.env.VITE_URL;
 	const searchParams = new URLSearchParams(window.location.search);
 	const stagingParam = searchParams.has('staging');
 	return stagingParam ? `${appUri}wrapped?staging=true` : `${appUri}wrapped`;
