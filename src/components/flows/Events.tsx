@@ -6,6 +6,8 @@ import { Cube } from "../Cube";
 import { EventId, getEventName } from '@wca/helpers'
 import { useEffect, useMemo, useState } from "react";
 import { useToast } from '@chakra-ui/react'
+import { useMediaQuery } from '@chakra-ui/react'
+
 
 import {
 	Stat,
@@ -20,14 +22,16 @@ import { ResultsEntity } from "../../types/competition";
 
 function getTotalAttempts(competitions: NonNullable<StoreState['competitionsByYear']>, filter: { year?: string, event?: string }) {
 	if (filter.year && !filter.event) {
-		return (competitions[filter.year] ?? []).map(competition => competition.results?.map(result => result.attempts?.length ?? 0)).flat().reduce((acc: number, curr: number | undefined) => acc + (curr ?? 0), 0)
+		return (competitions[filter.year] ?? []).map(competition => competition.results?.map(result => result.attempts?.filter(a => a !== 0).length ?? 0)).flat().reduce((acc: number, curr: number | undefined) => acc + (curr ?? 0), 0)
 	}
 	if (filter.event && filter.year) {
-		return (competitions[filter.year] ?? []).map(competition => competition.results?.filter(result => result.event_id === filter.event).map(result => result.attempts?.length ?? 0)).flat().reduce((acc: number, curr: number | undefined) => acc + (curr ?? 0), 0)
+		return (competitions[filter.year] ?? []).map(competition => competition.results?.filter(result => result.event_id === filter.event).map(result => {
+			return result.attempts?.filter(a => a !== 0).length ?? 0
+		})).flat().reduce((acc: number, curr: number | undefined) => acc + (curr ?? 0), 0)
 
 	}
 	if (filter.event && !filter.year) {
-		return Object.keys(competitions).map(year => year !== "2023" ? competitions[year] : []).flat().map(competition => competition.results?.filter(result => result.event_id === filter.event).map(result => result.attempts?.length ?? 0)).flat().reduce((acc: number, curr: number | undefined) => acc + (curr ?? 0), 0)
+		return Object.keys(competitions).map(year => year !== "2023" ? competitions[year] : []).flat().map(competition => competition.results?.filter(result => result.event_id === filter.event).map(result => result.attempts?.filter(a => a !== 0).length ?? 0)).flat().reduce((acc: number, curr: number | undefined) => acc + (curr ?? 0), 0)
 	}
 }
 
@@ -51,6 +55,7 @@ function getFinals(events: NonNullable<StoreState['positionsByYear']>, filter: {
 }
 
 export default function CompetitionAndEvents() {
+	const [isLargerThan700] = useMediaQuery('(min-height: 700px)')
 	const toast = useToast();
 	useEffect(() => {
 		const timeout = setTimeout(() => {
@@ -143,7 +148,7 @@ export default function CompetitionAndEvents() {
 						<Flex w="fit-content" as="button" position={"relative"} maxH="64px" className={event === selected ? "selected" : ""} onClick={() => setSelected(event)} align={"center"} justify={"center"} direction={"column"} key={`${event}-selected${selected}`}>
 							<Cube alg={moves[getRandomInt(moves.length)]} className={`events`} hintFacelets="none" background="none" controlPanel="none" puzzle={puzzle[event]} />
 							{!eventsCompetedRestYear[event] && <Badge minH={"10px"} top={0} zIndex={2000} position="absolute" fontSize={"0.5rem"} colorScheme="green" variant="solid">New</Badge>}
-							<Text fontSize={"xs"}>{getEventName(event as EventId)}</Text>
+							{isLargerThan700 && <Text fontSize={"xs"}>{getEventName(event as EventId)}</Text>}
 						</Flex>
 					)}
 				</Flex>
