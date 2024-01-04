@@ -69,6 +69,7 @@ export default function Thanks() {
 		// @ts-expect-error reduer
 		return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc
 	}, {});
+	console.log(Object.keys(eventsCompetedInThisYear).length - Object.keys(eventsCompetedInLastYear).length)
 
 	const diffs = useMemo(() => ({
 		countries: countries(competitionsByYear!),
@@ -76,6 +77,7 @@ export default function Thanks() {
 		podiums: (positionsByYear!["2023"]?.filter(p => p.pos <= 3).length ?? 0) - (positionsByYear!["2022"]?.filter(p => p.pos <= 3).length ?? 0),
 		events: Object.keys(eventsCompetedInThisYear).length - Object.keys(eventsCompetedInLastYear).length
 	}), [competitionsByYear, positionsByYear, eventsCompetedInThisYear, eventsCompetedInLastYear])
+	console.log(diffs)
 
 	useEffect(() => {
 		const animation = async () => {
@@ -187,7 +189,7 @@ export default function Thanks() {
 								<StatNumber>{Object.keys(eventsCompetedInThisYear).length}</StatNumber>
 								<StatHelpText>
 									<StatArrow color={diffs.events < 0 ? "red.300" : "green"} type={diffs.events < 0 ? "decrease" : "increase"} />
-									{diffs.competitions}
+									{diffs.events}
 								</StatHelpText>
 							</Stat>
 						</StatGroup>
