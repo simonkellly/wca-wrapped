@@ -65,7 +65,7 @@ export default function Thanks() {
 
 	const diffs = useMemo(() => ({
 		countries: countries(competitionsByYear!),
-		competitions: (competitionsByYear!["2023"].length ?? 0) - (competitionsByYear!["2022"].length ?? 0),
+		competitions: (competitionsByYear!["2023"]?.length ?? 0) - (competitionsByYear!["2022"]?.length ?? 0),
 		podiums: (positionsByYear!["2023"]?.filter(p => p.pos <= 3).length ?? 0) - (positionsByYear!["2022"]?.filter(p => p.pos <= 3).length ?? 0),
 		events: Object.keys(eventsCompetedInThisYear).length - Object.keys(eventsCompetedInLastYear).length
 	}), [competitionsByYear, positionsByYear, eventsCompetedInThisYear, eventsCompetedInLastYear])

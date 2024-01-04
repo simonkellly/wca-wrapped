@@ -24,9 +24,12 @@ export async function createWrapped(user: User, accessToken: string): Promise<{
 	countryId: string | undefined;
 }> {
 	console.log(`Creating Wrapped for user ${user.name}`)
+	const urlParams = new URLSearchParams(window.location.search);
+	const id = urlParams.get('id');
+	const wca_id = id ?? user.wca_id
 	const res = await wcaApiFetch(`/me`, accessToken, {})
-	const userCompetitions: Omit<Competition, "results">[] = await wcaApiFetch(`/persons/${user.wca_id}/competitions`, accessToken, {})
-	const personalResults: ResultsEntity[] = await wcaApiFetch(`/persons/${user.wca_id}/results`, accessToken, {})
+	const userCompetitions: Omit<Competition, "results">[] = await wcaApiFetch(`/persons/${wca_id}/competitions`, accessToken, {})
+	const personalResults: ResultsEntity[] = await wcaApiFetch(`/persons/${wca_id}/results`, accessToken, {})
 	const results: { [key: string]: any[] } = objectify(personalResults, (result) => result.competition_id)
 	const competitions: Competition[] = userCompetitions.map((competition: any) => ({ ...competition, results: results[competition.id] }))
 	const competitionsByYear = objectify<Competition>(competitions, (competition) => competition.id.substring(competition.id.length - 4))

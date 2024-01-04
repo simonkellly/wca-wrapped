@@ -20,10 +20,10 @@ import { ResultsEntity } from "../../types/competition";
 
 function getTotalAttempts(competitions: NonNullable<StoreState['competitionsByYear']>, filter: { year?: string, event?: string }) {
 	if (filter.year && !filter.event) {
-		return competitions[filter.year].map(competition => competition.results?.map(result => result.attempts?.length ?? 0)).flat().reduce((acc: number, curr: number | undefined) => acc + (curr ?? 0), 0)
+		return (competitions[filter.year] ?? []).map(competition => competition.results?.map(result => result.attempts?.length ?? 0)).flat().reduce((acc: number, curr: number | undefined) => acc + (curr ?? 0), 0)
 	}
 	if (filter.event && filter.year) {
-		return competitions[filter.year].map(competition => competition.results?.filter(result => result.event_id === filter.event).map(result => result.attempts?.length ?? 0)).flat().reduce((acc: number, curr: number | undefined) => acc + (curr ?? 0), 0)
+		return (competitions[filter.year] ?? []).map(competition => competition.results?.filter(result => result.event_id === filter.event).map(result => result.attempts?.length ?? 0)).flat().reduce((acc: number, curr: number | undefined) => acc + (curr ?? 0), 0)
 
 	}
 	if (filter.event && !filter.year) {
@@ -38,13 +38,13 @@ function diffPercent(a: number, b: number) {
 function getFinals(events: NonNullable<StoreState['positionsByYear']>, filter: { year?: string, event?: string, topN?: number }) {
 	let finals: ResultsEntity[] = []
 	if (filter.year && !filter.event) {
-		finals = events[filter.year]
+		finals = events[filter.year] ?? []
 	}
 	if (filter.year && filter.event) {
-		finals = events[filter.year].filter(result => result.event_id === filter.event)
+		finals = (events[filter.year] ?? []).filter(result => result.event_id === filter.event) ?? []
 	}
 	if (filter.event && !filter.year) {
-		finals = Object.keys(events).map(year => year !== "2023" ? events[year] : []).flat().filter(result => result.event_id === filter.event)
+		finals = Object.keys(events).map(year => year !== "2023" ? events[year] : []).flat().filter(result => result.event_id === filter.event) ?? []
 	}
 	if (filter.topN !== undefined) return finals.filter(result => result.pos <= filter.topN!).length
 	else return finals.length
