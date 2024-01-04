@@ -44,10 +44,11 @@ export default function Root() {
 
 	useEffect(() => {
 		if (twisty) {
-			twisty.puzzle = puzzle[cube]
 			alg.current = []
+			twisty.puzzle = puzzle[cube]
+			twisty.alg = ""
 		}
-	}, [cube])
+	}, [cube, twisty])
 
 	useEffect(() => {
 		animation()
@@ -89,7 +90,7 @@ export default function Root() {
 						<Box id="wrapped-container" borderRadius={"2%"} w="100%" h="100%" overflow={"hidden"} background={"rgb(34,193,195) radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);"}>
 							{wrappedState.state !== WrappedState.Thanks &&
 								<Flex justify={"center"} w="100%" h="30%" m="auto" as={motion.div} ref={cubeScope}>
-									<Cube puzzle={puzzle[cube]} onTwistyInit={twisty => setTwisty(twisty)} controlPanel='none' hintFacelets='none' background="none" />
+									<Cube key={puzzle[cube]} puzzle={puzzle[cube]} onTwistyInit={twisty => setTwisty(twisty)} controlPanel='none' hintFacelets='none' background="none" />
 								</Flex>}
 							<Box mt={wrappedState.state === WrappedState.Thanks ? "2rem" : "0"} h={wrappedState.state === WrappedState.Thanks ? "100%" : "70%"} w="100%" display={"none"} gridTemplateAreas={`"title" "content" "buttons"`} gridTemplateRows={"10% 80% 10%"} as={motion.div} animate={{ opacity: 1, transition: { staggerChildren: 2 } }} ref={divScope}>
 								<AnimatedTitle text={"Cubing Wrapped 2023"} />
