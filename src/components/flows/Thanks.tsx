@@ -13,6 +13,13 @@ import {
 import "@cubing/icons";
 import MapChart from "../charts/MapChart";
 
+const delegate = {
+	"candidate_delegate": "Junior Delegate",
+	"delegate": "Delegate",
+	"trainee_delegate": "Trainee Delegate",
+	"senior_delegate": "Senior Delegate"
+}
+
 function countries(competitions: NonNullable<StoreState['competitionsByYear']>) {
 	const countries2023 = (competitions!["2023"] ?? []).map(competition => competition.country_iso2).reduce(function (acc, curr) {
 		// @ts-expect-error reducer
@@ -141,7 +148,7 @@ export default function Thanks() {
 
 							{
 								// @ts-expect-error user
-								user?.delegate_status && <WrapItem><Tag key={user?.delegate_status} colorScheme={"green"}>{user.delegate_status.replace("_", " ").toLocaleUpperCase()}</Tag></WrapItem>
+								user?.delegate_status && <WrapItem><Tag key={user?.delegate_status} colorScheme={"green"}>{delegate[user.delegate_status]}</Tag></WrapItem>
 							}
 						</Wrap>
 					</Flex>

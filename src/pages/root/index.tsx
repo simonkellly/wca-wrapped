@@ -75,7 +75,7 @@ export default function Root() {
 			<SettingsModal />
 			<AnimatePresence>
 				<Flex direction={"row"} justify={"center"} align="center" bg="gray.800" w="100vw" h="100vh">
-					<Container h="98%" display={"flex"} alignContent={"center"} alignItems={"center"} gap="1rem" >
+					<Container px={{ base: '0', lg: 4 }} h="98%" display={"flex"} alignContent={"center"} alignItems={"center"} gap="1rem" >
 						<IconButton
 							onClick={() => changeWrappedState("left")}
 							isDisabled={index <= 0}
@@ -87,7 +87,7 @@ export default function Root() {
 							colorScheme='primary'
 							size={"sm"}
 							aria-label='back' icon={<ArrowBackIcon />} />
-						<Box id="wrapped-container" borderRadius={"2%"} w="100%" h="100%" overflowY={"hidden"} background={"rgb(34,193,195) radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);"}>
+						<Box id="wrapped-container" borderRadius={"2%"} w="100%" h="100%" overflow={"hidden"} background={"rgb(34,193,195) radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);"}>
 							{wrappedState.state !== WrappedState.Thanks &&
 								<Flex justify={"center"} w="100%" m="auto" as={motion.div} ref={cubeScope}>
 									<Cube className='twisty' key={puzzle[cube]} puzzle={puzzle[cube]} onTwistyInit={twisty => setTwisty(twisty)} controlPanel='none' hintFacelets='none' background="none" />
