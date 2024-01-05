@@ -50,7 +50,7 @@ function getFinals(events: NonNullable<StoreState['positionsByYear']>, filter: {
 	if (filter.event && !filter.year) {
 		finals = Object.keys(events).map(year => year !== "2023" ? events[year] : []).flat().filter(result => result.event_id === filter.event) ?? []
 	}
-	if (filter.topN !== undefined) return finals.filter(result => result.pos <= filter.topN!).length
+	if (filter.topN !== undefined) return finals.filter(result => result.pos <= filter.topN! && result.best !== -1).length
 	else return finals.length
 }
 
