@@ -15,7 +15,7 @@ const geoUrl = "/features.json";
 const MapChart = () => {
 	const competitions = useStore(state => state.competitionsByYear)
 	// @ts-expect-error reducer
-	const countries = (competitions!["2023"] ?? []).map(competition => competition.country_iso2).reduce(function (acc, curr) { return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc }, {});
+	const countries = (competitions!["2024"] ?? []).map(competition => competition.country_iso2).reduce(function (acc, curr) { return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc }, {});
 
 	return (
 		<ComposableMap

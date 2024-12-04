@@ -31,7 +31,7 @@ function getTotalAttempts(competitions: NonNullable<StoreState['competitionsByYe
 
 	}
 	if (filter.event && !filter.year) {
-		return Object.keys(competitions).map(year => year !== "2023" ? competitions[year] : []).flat().map(competition => competition.results?.filter(result => result.event_id === filter.event).map(result => result.attempts?.filter(a => a !== 0).length ?? 0)).flat().reduce((acc: number, curr: number | undefined) => acc + (curr ?? 0), 0)
+		return Object.keys(competitions).map(year => year !== "2024" ? competitions[year] : []).flat().map(competition => competition.results?.filter(result => result.event_id === filter.event).map(result => result.attempts?.filter(a => a !== 0).length ?? 0)).flat().reduce((acc: number, curr: number | undefined) => acc + (curr ?? 0), 0)
 	}
 }
 
@@ -48,7 +48,7 @@ function getFinals(events: NonNullable<StoreState['positionsByYear']>, filter: {
 		finals = (events[filter.year] ?? []).filter(result => result.event_id === filter.event) ?? []
 	}
 	if (filter.event && !filter.year) {
-		finals = Object.keys(events).map(year => year !== "2023" ? events[year] : []).flat().filter(result => result.event_id === filter.event) ?? []
+		finals = Object.keys(events).map(year => year !== "2024" ? events[year] : []).flat().filter(result => result.event_id === filter.event) ?? []
 	}
 	if (filter.topN !== undefined) return finals.filter(result => result.pos <= filter.topN! && result.best !== -1).length
 	else return finals.length
@@ -69,11 +69,11 @@ export default function CompetitionAndEvents() {
 		return () => clearTimeout(timeout)
 	}, [])
 	const competitions: NonNullable<StoreState['competitionsByYear']> = useStore(state => state.competitionsByYear) as NonNullable<StoreState['competitionsByYear']>
-	const eventsCompetedInThisYear = competitions["2023"].map(competition => competition.results?.map(result => result.event_id)).flat().reduce(function (acc, curr) {
+	const eventsCompetedInThisYear = competitions["2024"].map(competition => competition.results?.map(result => result.event_id)).flat().reduce(function (acc, curr) {
 		// @ts-expect-error reduer
 		return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc
 	}, {});
-	const eventsCompetedRestYear: { [key: string]: unknown } = Object.keys(competitions).filter(year => year !== "2023").map(year => competitions[year]).flat().map(competition => competition.results?.map(result => result.event_id)).flat().reduce(function (acc, curr) {
+	const eventsCompetedRestYear: { [key: string]: unknown } = Object.keys(competitions).filter(year => year !== "2024").map(year => competitions[year]).flat().map(competition => competition.results?.map(result => result.event_id)).flat().reduce(function (acc, curr) {
 		// @ts-expect-error reduer
 		return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc
 	}, {});
@@ -87,19 +87,19 @@ export default function CompetitionAndEvents() {
 
 
 	const attempts = useMemo(() => {
-		const curr = selected === "" ? getTotalAttempts(competitions, { year: "2023" }) : getTotalAttempts(competitions, { year: "2023", event: selected })
-		const prev = selected === "" ? getTotalAttempts(competitions, { year: "2022" }) : getTotalAttempts(competitions, { year: "2022", event: selected })
+		const curr = selected === "" ? getTotalAttempts(competitions, { year: "2024" }) : getTotalAttempts(competitions, { year: "2024", event: selected })
+		const prev = selected === "" ? getTotalAttempts(competitions, { year: "2023" }) : getTotalAttempts(competitions, { year: "2023", event: selected })
 		return { text: curr, diff: diffPercent(curr ?? 0, prev ?? 0), type: (curr ?? 0) < (prev ?? 0) ? "decrease" : "increase" }
 	}, [selected, competitions])
 
 	const finals = useMemo(() => {
-		const curr = selected === "" ? getFinals(positionsByYear!, { year: "2023" }) : getFinals(positionsByYear!, { year: "2023", event: selected })
-		const prev = selected === "" ? getFinals(positionsByYear!, { year: "2022" }) : getFinals(positionsByYear!, { year: "2022", event: selected })
+		const curr = selected === "" ? getFinals(positionsByYear!, { year: "2024" }) : getFinals(positionsByYear!, { year: "2024", event: selected })
+		const prev = selected === "" ? getFinals(positionsByYear!, { year: "2023" }) : getFinals(positionsByYear!, { year: "2023", event: selected })
 		return { text: curr, diff: diffPercent(curr ?? 0, prev ?? 0), type: (curr ?? 0) < (prev ?? 0) ? "decrease" : "increase" }
 	}, [selected, positionsByYear])
 	const podiums = useMemo(() => {
-		const curr = selected === "" ? getFinals(positionsByYear!, { year: "2023", topN: 3 }) : getFinals(positionsByYear!, { year: "2023", event: selected, topN: 3 })
-		const prev = selected === "" ? getFinals(positionsByYear!, { year: "2022", topN: 3 }) : getFinals(positionsByYear!, { year: "2022", event: selected, topN: 3 })
+		const curr = selected === "" ? getFinals(positionsByYear!, { year: "2024", topN: 3 }) : getFinals(positionsByYear!, { year: "2024", event: selected, topN: 3 })
+		const prev = selected === "" ? getFinals(positionsByYear!, { year: "2023", topN: 3 }) : getFinals(positionsByYear!, { year: "2023", event: selected, topN: 3 })
 		return { text: curr, diff: diffPercent(curr ?? 0, prev ?? 0), type: (curr ?? 0) < (prev ?? 0) ? "decrease" : "increase" }
 	}, [selected, positionsByYear])
 

@@ -36,7 +36,7 @@ export async function createWrapped(user: User, accessToken: string): Promise<{
 	const positionsByYear = objectify<ResultsEntity>(competitions.flatMap(competition => (competition.results ?? []).filter(r => {
 		return r.round_type_id === "f" || r.round_type_id === "c"
 	})), result => result.competition_id.substring(result.competition_id.length - 4))
-	if (!competitionsByYear["2023"]) {
+	if (!competitionsByYear["2024"]) {
 		return {
 			flows: [WrappedState.NoCompetitions, WrappedState.Thanks],
 			competitionsByYear,
@@ -47,12 +47,12 @@ export async function createWrapped(user: User, accessToken: string): Promise<{
 
 	const flows: WrappedState[] = []
 
-	if (competitionsByYear["2023"].length > 0) {
+	if (competitionsByYear["2024"].length > 0) {
 		flows.push(WrappedState.Competitions)
 		flows.push(WrappedState.Events)
 	}
-	if (user.wca_id.includes("2023")) flows.push(WrappedState.Newcomer)
-	if (competitionsByYear["2023"] && competitionsByYear["2023"].length > 0) {
+	if (user.wca_id.includes("2024")) flows.push(WrappedState.Newcomer)
+	if (competitionsByYear["2024"] && competitionsByYear["2024"].length > 0) {
 		flows.push(WrappedState.FavStaff)
 	}
 	flows.push(WrappedState.Thanks)

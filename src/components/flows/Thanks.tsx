@@ -21,19 +21,19 @@ const delegate = {
 }
 
 function countries(competitions: NonNullable<StoreState['competitionsByYear']>) {
-	const countries2023 = (competitions!["2023"] ?? []).map(competition => competition.country_iso2).reduce(function (acc, curr) {
+	const countries2024 = (competitions!["2024"] ?? []).map(competition => competition.country_iso2).reduce(function (acc, curr) {
 		// @ts-expect-error reducer
 		return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc
 	}, {});
-	const countriesRest = Object.keys(competitions).filter(year => year !== "2023").map(year => competitions[year]).flat().map(competition => competition.country_iso2).reduce(function (acc, curr) {
+	const countriesRest = Object.keys(competitions).filter(year => year !== "2024").map(year => competitions[year]).flat().map(competition => competition.country_iso2).reduce(function (acc, curr) {
 		// @ts-expect-error reducer
 		return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc
 	}, {});
 	let newCountries = 0;
-	for (const country in countries2023) {
+	for (const country in countries2024) {
 		if (!(country in countriesRest) && !country.startsWith("X")) newCountries++;
 	}
-	return { newCountries, countries2023, countriesRest }
+	return { newCountries, countries2024, countriesRest }
 }
 
 
@@ -61,19 +61,19 @@ export default function Thanks() {
 	const user = useStore(state => state.user)
 	const competitionsByYear = useStore(state => state.competitionsByYear)
 	const positionsByYear = useStore(state => state.positionsByYear)
-	const eventsCompetedInThisYear = (competitionsByYear!["2023"] ?? []).map(competition => competition.results?.map(result => result.event_id)).flat().reduce(function (acc, curr) {
+	const eventsCompetedInThisYear = (competitionsByYear!["2024"] ?? []).map(competition => competition.results?.map(result => result.event_id)).flat().reduce(function (acc, curr) {
 		// @ts-expect-error reduer
 		return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc
 	}, {});
-	const eventsCompetedInLastYear = (competitionsByYear!["2022"] ?? []).map(competition => competition.results?.map(result => result.event_id)).flat().reduce(function (acc, curr) {
+	const eventsCompetedInLastYear = (competitionsByYear!["2023"] ?? []).map(competition => competition.results?.map(result => result.event_id)).flat().reduce(function (acc, curr) {
 		// @ts-expect-error reduer
 		return acc[curr] ? ++acc[curr] : acc[curr] = 1, acc
 	}, {});
 
 	const diffs = useMemo(() => ({
 		countries: countries(competitionsByYear!),
-		competitions: (competitionsByYear!["2023"]?.length ?? 0) - (competitionsByYear!["2022"]?.length ?? 0),
-		podiums: (positionsByYear!["2023"]?.filter(p => p.pos <= 3).length ?? 0) - (positionsByYear!["2022"]?.filter(p => p.pos <= 3).length ?? 0),
+		competitions: (competitionsByYear!["2024"]?.length ?? 0) - (competitionsByYear!["2023"]?.length ?? 0),
+		podiums: (positionsByYear!["2024"]?.filter(p => p.pos <= 3).length ?? 0) - (positionsByYear!["2023"]?.filter(p => p.pos <= 3).length ?? 0),
 		events: Object.keys(eventsCompetedInThisYear).length - Object.keys(eventsCompetedInLastYear).length
 	}), [competitionsByYear, positionsByYear, eventsCompetedInThisYear, eventsCompetedInLastYear])
 
@@ -159,7 +159,7 @@ export default function Thanks() {
 						<StatGroup w="50%" display={"grid"} gridTemplateColumns={"repeat(2, 1fr)"}>
 							<Stat >
 								<StatLabel>Competitions</StatLabel>
-								<StatNumber>{competitionsByYear!["2023"].length}</StatNumber>
+								<StatNumber>{competitionsByYear!["2024"].length}</StatNumber>
 								<StatHelpText>
 									<StatArrow color={diffs.competitions < 0 ? "red.300" : "green"} type={diffs.competitions < 0 ? "decrease" : "increase"} />
 									{diffs.competitions}
@@ -168,7 +168,7 @@ export default function Thanks() {
 
 							<Stat>
 								<StatLabel>Podiums</StatLabel>
-								<StatNumber>{positionsByYear!["2023"] ? positionsByYear!["2023"].filter(p => p.pos <= 3).length : 0}</StatNumber>
+								<StatNumber>{positionsByYear!["2024"] ? positionsByYear!["2024"].filter(p => p.pos <= 3).length : 0}</StatNumber>
 								<StatHelpText>
 									<StatArrow color={diffs.podiums < 0 ? "red.300" : "green"} type={diffs.podiums < 0 ? "decrease" : "increase"} />
 									{diffs.podiums}
@@ -176,7 +176,7 @@ export default function Thanks() {
 							</Stat>
 							<Stat>
 								<StatLabel>Countries</StatLabel>
-								<StatNumber>{Object.keys(diffs.countries.countries2023).filter(key => !key.startsWith("X")).length}</StatNumber>
+								<StatNumber>{Object.keys(diffs.countries.countries2024).filter(key => !key.startsWith("X")).length}</StatNumber>
 								{diffs.countries.newCountries > 0 && <StatHelpText>
 									<StatArrow color={"green"} type={"increase"} />
 									{diffs.countries.newCountries}

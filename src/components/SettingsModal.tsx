@@ -48,7 +48,7 @@ export default function CubeSelectModal() {
 			<Modal isOpen={isOpen} onClose={onClose} size={{ base: "full", md: "lg" }}>
 				<ModalOverlay />
 				<ModalContent display={"flex"} flexDirection={"column"} alignItems={"center"} justifyContent={"center"} gap="2rem">
-					<ModalHeader mt="2rem">Cubing Wrapped 2023</ModalHeader>
+					<ModalHeader mt="2rem">Cubing Wrapped 2024</ModalHeader>
 					<ModalBody gap="1rem" display={"flex"} flexDirection={"column"} w="100%">
 						<FormControl w="100%">
 							<FormLabel>Puzzle to show</FormLabel>

@@ -9,7 +9,7 @@ import StaggeredDisplay from "../StaggeredDisplay"
 export default function FavStaff() {
 	const competitionsByYear = useStore(state => state.competitionsByYear)
 	const favStaff = useMemo(() => {
-		const competitions = competitionsByYear!["2023"]
+		const competitions = competitionsByYear!["2024"]
 		const delegates = competitions?.map(competition => competition.delegates ?? []).flat().sort((a, b) => a.id - b.id)
 		let count = 1;
 		let max = 0;
@@ -33,7 +33,7 @@ export default function FavStaff() {
 
 		<StaggeredDisplay textAlign={"center"} w="100%" h="100%" direction={"column"} gap="0.5rem">
 			<Box w="100%" display={"inline-block"} opacity="0">
-				<Text display={"inline-block"} fontSize={"lg"}>{`Out of all competitions in 2023`}</Text>
+				<Text display={"inline-block"} fontSize={"lg"}>{`Out of all competitions in 2024`}</Text>
 			</Box>
 			<Box w="100%" display={"inline-block"} opacity="0">
 				<Text display={"inline-block"} fontSize={"lg"}>{`One Delegate was your favorite`}</Text>
@@ -51,7 +51,7 @@ export default function FavStaff() {
 				</Flex>
 			</Box>
 			<Box w="100%" display={"inline-block"} opacity="0">
-				<Button as="a" href={`mailto:${favStaff.delegate?.email}?subject=Thank%20you%20for%20Delegating!&body=Hi%20 ${favStaff.delegate?.name}%2C%0A%0AYou%20delegated%20the%20most%20amount%20of%20competitions%20I%20attended%20in%202023.%20I'm%20sending%20out%20this%20email%20as%20a%20token%20of%20appreciation.%20Thank%20you%20for%20all%20your%20hard%20work!%0A%0A`} colorScheme="primary">Say thanks</Button>
+				<Button as="a" href={`mailto:${favStaff.delegate?.email}?subject=Thank%20you%20for%20Delegating!&body=Hi%20 ${favStaff.delegate?.name}%2C%0A%0AYou%20delegated%20the%20most%20amount%20of%20competitions%20I%20attended%20in%202024.%20I'm%20sending%20out%20this%20email%20as%20a%20token%20of%20appreciation.%20Thank%20you%20for%20all%20your%20hard%20work!%0A%0A`} colorScheme="primary">Say thanks</Button>
 			</Box>
 		</StaggeredDisplay>
 

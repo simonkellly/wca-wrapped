@@ -99,7 +99,7 @@ export default function Root() {
 								base: "10% 80% 10%",
 								lg: "10% 90% 0%"
 							}} as={motion.div} animate={{ opacity: 1, transition: { staggerChildren: 2 } }} ref={divScope}>
-								<AnimatedTitle text={"Cubing Wrapped 2023"} />
+								<AnimatedTitle text={"Cubing Wrapped 2024"} />
 								<Outlet />
 								<ControllerButton />
 							</Box>

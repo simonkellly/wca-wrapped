@@ -53,7 +53,7 @@ export default function Newcomer() {
 				{new Array(6).fill(0).map((_, i) => (
 					<Box opacity={"0"} position={"absolute"} key={`row1-${i}`} top={`${getRandomInt(20, 0)}%`} left={`${i * 20}%`} as={motion.div}>
 						<Badge fontSize='3xl' colorScheme='secondary'>
-							2023
+							2024
 						</Badge>
 					</Box>
 				))}
@@ -67,7 +67,7 @@ export default function Newcomer() {
 				{new Array(6).fill(0).map((_, i) => (
 					<Box opacity={"0"} position={"absolute"} key={`row3-${i}`} top={`${getRandomInt(60, 40)}%`} left={`${i * 20}%`} as={motion.div}>
 						<Badge fontSize='3em' colorScheme='secondary'>
-							2023
+							2024
 						</Badge>
 					</Box>
 				))}
@@ -88,7 +88,7 @@ export default function Newcomer() {
 					</Box>
 					<Box opacity={"0"} display={"inline-block"}>
 
-						<Text mx={4} fontSize={"lg"}>{`You were one of ${total.toLocaleString()} new WCA Cubers in 2023`}</Text>
+						<Text mx={4} fontSize={"lg"}>{`You were one of ${total.toLocaleString()} new WCA Cubers in 2024`}</Text>
 
 					</Box>
 					{newcomers[countryId as string] && <Box opacity={"0"} display={"inline-block"}>

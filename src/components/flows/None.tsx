@@ -7,7 +7,7 @@ export default function None() {
 	return (
 		<>
 			<AnimatedTitle text={`Welcome ${user?.name.split(" ")[0]}!`} />
-			<Text textAlign={"center"} fontSize="xl">{`Lets see what 2023 had in store for you`}</Text>
+			<Text textAlign={"center"} fontSize="xl">{`Lets see what 2024 had in store for you`}</Text>
 
 			<Stack h="100%" w="100%">
 				<Skeleton height='20%' />
